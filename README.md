@@ -1,9 +1,9 @@
-# typeformPython
+# typeform
 A python wrapper for the typeform API
 
 #Installation
 Clone the repo </br>
-<pre><code>git clone https://github.com/grobbie94/typeformPython.git </pre></code>
+<pre><code>git clone https://github.com/WarmongeR1/typeformPython.git </pre></code>
 In the base directory run:
 <pre><code>python setup.py install
 </pre></code>
@@ -11,24 +11,24 @@ In the base directory run:
 
 #Usage
 <b>Instantiating a form object</b>
-<pre><code>from typeformPython import typeform
-tf = typeform(API_KEY)
-exampleForm = tf.getForm(formKey)
+<pre><code>from typeform import TypeFormAPI
+api = TypeFormAPI(API_KEY)
+exampleForm = api.get_form(formKey)
 </pre></code>
 
 <b>Retrieving questions from a form object</b>
-<pre><code>questionDict = exampleFrom.getQuestions()
+<pre><code>questionDict = exampleFrom.get_questions()
 </pre></code>
 Returns a dictionary of the form {questionToken: Question Text}
 
 <b>Retrieving responses from a form object</b>
-<pre><code>responseDict = exampleForm.getAllCompletedResponses()
+<pre><code>responseDict = exampleForm.get_all_completed_responses()
 </pre></code>
 
 Returns all responses in form: {responseToken: {questionToken: answerString....}}
 
 <b> Get average rating of a rating or opinion question</b>
-<pre><code>rating = exampleForm.getAverageRating(questionToken)
+<pre><code>rating = exampleForm.get_average_rating(questionToken)
 </pre></code>
 
 
