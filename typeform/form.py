@@ -39,9 +39,11 @@ class TypeForm:
         answer = {}
         responses = self.json["responses"]
         for response in responses:
-            response_time = datetime.strptime(
-                response["metadata"]["date_submit"], "%Y-%m-%d %H:%M:%S")
-            if response["completed"] == "1" and response_time < until_time:
+            if response["completed"] == "1" \
+                    and datetime.strptime(
+                        response["metadata"]["date_submit"],
+                        "%Y-%m-%d %H:%M:%S"
+                    ) < until_time:
                 answer[response["token"]] = response["answers"]
         return answer
 
