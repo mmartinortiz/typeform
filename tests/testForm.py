@@ -15,6 +15,11 @@ class testForm(unittest.TestCase):
 
     def test_get_questions(self):
         questions = self.testForm.get_questions()
+        self.assertEqual(questions["list_17638595_choice"]['question'],
+                         "Please select the coordinators for your class:")
+
+    def test_get_questions_texts(self):
+        questions = self.testForm.get_questions_texts()
         self.assertEqual(questions["list_17638595_choice"],
                          "Please select the coordinators for your class:")
 

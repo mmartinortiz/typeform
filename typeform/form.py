@@ -20,7 +20,18 @@ class TypeForm:
         questions_dict = {}
         questions = self.json["questions"]
         for question in questions:
-            questions_dict[question["id"]] = question["question"]
+            questions_dict[question["id"]] = question
+        return questions_dict
+
+    def get_questions_texts(self):
+        """
+        Returns a dictionary of the form {questionToken: Question Text}
+        A question token is a unique key for the question
+        """
+        questions_dict = {}
+        questions = self.json["questions"]
+        for question in questions:
+            questions_dict[question["id"]] = question['question']
         return questions_dict
 
     def get_all_completed_responses(self):
