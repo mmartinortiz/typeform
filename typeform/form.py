@@ -34,14 +34,14 @@ class TypeForm:
             questions_dict[question["id"]] = question['question']
         return questions_dict
 
-    def get_all_completed_responses(self):
+    def get_all_completed_responses(self, hidden=False, metadata=False):
         """
         Returns all responses in form:
         {responseToken: {questionToken: answerString....}}
         """
-        return self.get_completed_responses_before(datetime.now())
+        return self.get_completed_responses_before(datetime.now(), hidden, metadata)
 
-    def get_completed_responses_before(self, until_time):
+    def get_completed_responses_before(self, until_time, hidden=False, metadata=False):
         """
         Returns responses before untilTime in form:
         {responseToken: {questionToken: answerString....}}
@@ -55,7 +55,12 @@ class TypeForm:
                         response["metadata"]["date_submit"],
                         "%Y-%m-%d %H:%M:%S"
                     ) < until_time:
-                        answer[response["token"]] = {**response["answers"], **response["hidden"]}
+                        token = response["token"]
+                        answer[token] = response["answers"]
+                        if hidden:
+                            answer[token] = {**answer[token], **response["hidden"]}
+                        if metadata:
+                            answer[token] = {**answer[token], **response["metadata"]}
         return answer
 
     def get_average_rating(self, question_token):
