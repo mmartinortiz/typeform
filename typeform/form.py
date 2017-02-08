@@ -58,9 +58,9 @@ class TypeForm:
                         token = response["token"]
                         answer[token] = response["answers"]
                         if hidden:
-                            answer[token] = {**answer[token], **response["hidden"]}
+                            answer[token].update(**response['hidden'])
                         if metadata:
-                            answer[token] = {**answer[token], **response["metadata"]}
+                            answer[token].update(**response['metadata'])
         return answer
 
     def get_average_rating(self, question_token):
