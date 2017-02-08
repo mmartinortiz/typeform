@@ -55,7 +55,7 @@ class TypeForm:
                         response["metadata"]["date_submit"],
                         "%Y-%m-%d %H:%M:%S"
                     ) < until_time:
-                answer[response["token"]] = response["answers"]
+                        answer[response["token"]] = {**response["answers"], **response["hidden"]}
         return answer
 
     def get_average_rating(self, question_token):
