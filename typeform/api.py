@@ -14,19 +14,20 @@ class TypeFormAPI:
     def __init__(self, api_key):
         self.API_KEY = api_key
 
-    def get_form(self, form_key, options_dict={}):
+    def get_form(self, form_key, options_dict={}, api_version=0):
         """
         Returns a form object which can be queried to get
         responses to typeforms
         Parameters:
           formKey - Check the typeform API docs for info
           options_dict - Dictionary with TypeForm's API options. Check https://www.typeform.com/help/data-api/ for details
+          api_version - API version to be used. So far we have seen version 0 and 1
         """
         # TODO implement exception for no network etc.
         # @TODO: Incorporate tests for the options
         options = '&'.join(['{}={}'.format(k, v) for k, v in options_dict.items()])
-        api_url = "https://api.typeform.com/v0/form/{0}?key={1}&{options}".format(
-            form_key, self.API_KEY, options=options)
+        api_url = "https://api.typeform.com/v{version}/form/{form_key}?key={api_key}&{options}".format(
+            form_key=form_key, api_key=self.API_KEY, version=api_version, options=options)
         response = requests.get(api_url)
         status_code = response.status_code
         redirect_url = "https://api.typeform.com/login/"
