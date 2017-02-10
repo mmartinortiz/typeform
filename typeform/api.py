@@ -14,21 +14,31 @@ class TypeFormAPI:
     def __init__(self, api_key):
         self.API_KEY = api_key
 
-    def get_form(self, form_key):
+    def get_form(self, form_key, options_dict={}):
         """
         Returns a form object which can be queried to get
         responses to typeforms
-        Parameters: formKey - Check the typeform API docs for info
+        Parameters:
+          formKey - Check the typeform API docs for info
+          options_dict - Dictionary with TypeForm's API options. Check https://www.typeform.com/help/data-api/ for details
         """
         # TODO implement exception for no network etc.
-        api_url = "https://api.typeform.com/v0/form/{0}?key={1}".format(
-            form_key, self.API_KEY)
+        # @TODO: Incorporate tests for the options
+        options = '&'.join(['{}={}'.format(k, v) for k, v in options_dict.items()])
+        api_url = "https://api.typeform.com/v0/form/{0}?key={1}&{options}".format(
+            form_key, self.API_KEY, options=options)
         response = requests.get(api_url)
         status_code = response.status_code
         redirect_url = "https://api.typeform.com/login/"
         if status_code == 200 and response.url != redirect_url:
             return TypeForm(response.json())
+        elif status_code == 400:
+            raise ValueError('400 - Invalid date in query')
+        elif status_code == 403:
+            raise ValueError('403 - Expired token/Invalid token/token does not have access permissions/invalid token')
         elif status_code == 404:
-            raise ValueError("404 Not Found - Check Form Key")
+            raise ValueError("404 - Type in URL/Invalid typeform ID")
+        elif status_code == 429:
+            raise ValueError("429 - Request limit reached")
         else:
-            raise ValueError("404 Not Found - Check API_KEY")
+            raise ValueError("Unknown returned status code - Check API_KEY")
